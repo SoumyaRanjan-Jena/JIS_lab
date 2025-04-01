@@ -1,0 +1,22 @@
+@import url('https://use.typekit.net/xyz.css');
+@import "tailwindcss";
+ /* For Adobe Fonts */
+
+:root {
+  /* For premium fonts via Adobe Fonts or similar services */
+  --font-neue-montreal: 'Neue Montreal', sans-serif;
+  --font-general-sans: 'General Sans', sans-serif;
+  --font-recoleta: 'Recoleta', serif;
+  --font-tiempos: 'Tiempos Text', serif;
+}
+
+/* Custom CSS classes for each pairing */
+.outfit-inter h1, .outfit-inter h2, .outfit-inter h3, 
+.outfit-inter h4, .outfit-inter h5, .outfit-inter h6 {
+  font-family: var(--font-outfit), sans-serif;
+}
+
+.outfit-inter p, .outfit-inter li, .outfit-inter a {
+  font-family: var(--font-inter), sans-serif;
+}
+
