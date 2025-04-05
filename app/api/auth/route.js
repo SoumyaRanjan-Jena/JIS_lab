@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/utils/db';
+import dbConnect from '@/utils/db'; 
 import User from '@/models/userModel';
 import bcrypt from 'bcryptjs';
 

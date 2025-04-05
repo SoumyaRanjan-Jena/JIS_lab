@@ -7,10 +7,11 @@ import { LogOut } from 'lucide-react';
 export default function ProfileClient({ initialUser }) {
   const [user, setUser] = useState(initialUser);
   const [form, setForm] = useState({
-    name: initialUser?.name || '',
-    phone: initialUser?.phone || '',
-    profilePic: initialUser?.profilePic || ''
+    name: initialUser.name || '',
+    phone: initialUser.phone || '',
+    profilePic: initialUser.profilePic || ''
   });
+
   const [saving, setSaving] = useState(false);
   const router = useRouter();
 

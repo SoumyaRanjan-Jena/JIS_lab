@@ -1,22 +1,14 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+// app/profile/page.jsx
 import ProfileClient from './ProfileClient';
+import { getUserFromSession } from '@/lib/auth'; // You'll implement this
+import { redirect } from 'next/navigation';
 
-export default function ProfilePage() {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (!storedUser) {
-      router.push('/sign-in');
-    } else {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
-  if (!user) return null; // or a loading indicator
+export default async function ProfilePage() {
+  const user = await getUserFromSession(); // your backend session helper
+  console.log(user);
+  if (!user) {
+    redirect('/sign-in'); 
+  }
 
   return <ProfileClient initialUser={user} />;
 }

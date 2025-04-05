@@ -1,32 +1,50 @@
-import { cookies } from 'next/headers';
+// app/api/profile/route.js
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/utils/db';
+import { cookies } from 'next/headers';
+import dbConnect from '@/utils/db';
 import User from '@/models/userModel';
 
-export async function GET(req) {
-  const cookieStore = cookies();
-  const email = cookieStore.get('userEmail')?.value;
-
-  if (!email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  await connectToDB();
-  const user = await User.findOne({ email }).select('-password');
-  return NextResponse.json(user);
-}
-
 export async function PATCH(req) {
-  const cookieStore = cookies();
-  const email = cookieStore.get('userEmail')?.value;
+  try {
+    const body = await req.json();
 
-  if (!email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // Get email and userType from cookies
+    const cookieStore = cookies();
+    const email = cookieStore.get('email')?.value;
+    const userType = cookieStore.get('userType')?.value;
 
-  const { name, phone, profilePic } = await req.json();
-  await connectToDB();
-  const updated = await User.findOneAndUpdate(
-    { email },
-    { name, phone, profilePic },
-    { new: true, runValidators: true }
-  ).select('-password');
+    if (!email || !userType) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-  return NextResponse.json(updated);
+    await dbConnect();
+
+    const updatedUser = await User.findOneAndUpdate(
+      { email, userType },
+      {
+        $set: {
+          name: body.name,
+          phone: body.phone,
+          profilePic: body.profilePic
+        }
+      },
+      { new: true } // Return updated document
+    ).lean();
+
+    if (!updatedUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      _id: updatedUser._id.toString(),
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phone: updatedUser.phone,
+      profilePic: updatedUser.profilePic || '',
+      userType: updatedUser.userType
+    });
+  } catch (error) {
+    console.error('PATCH /api/profile error:', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
 }

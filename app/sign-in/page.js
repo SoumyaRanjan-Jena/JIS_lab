@@ -1,3 +1,4 @@
+//app/sign-in/page.js
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -13,22 +14,29 @@ export default function SignInPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    const result = await authenticateUser(formData);
-    
-    if (result === -1) {
-      alert("Invalid credentials! Please try again.");
-      setFormData({
-        userType: 'judge',
-        email: '',
-        password: ''
+  
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
       });
-    } else {
-      localStorage.setItem('user', JSON.stringify(result));
+  
+      const result = await res.json();
+  
+      if (!res.ok) {
+        alert(result.error || "Login failed");
+        return;
+      }
+  
       alert("Login successful!");
       router.push('/dashboard/view-cases');
-    }    
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong. Please try again.");
+    }
   }
+  
 
   const handleChange = (e) => {
     setFormData({

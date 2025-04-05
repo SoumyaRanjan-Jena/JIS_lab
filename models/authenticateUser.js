@@ -1,11 +1,11 @@
 'use server';
-import { connectToDB } from '@/utils/db';
+import dbConnect from '@/utils/db'; 
 import User from './userModel';
 import bcrypt from 'bcryptjs';
 
 async function authenticateUser(data) {
   try {
-    await connectToDB();
+    await dbConnect();
 
     const user = await User.findOne({ email: data.email, userType: data.userType });
     if (!user) return -1;
