@@ -7,12 +7,12 @@ import authenticateUser from '@/models/authenticateUser';
 export default function SignInPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    userType: 'judge',
+    userType: 'registrar',
     email: '',
     password: ''
   });
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
     try {
@@ -28,9 +28,9 @@ export default function SignInPage() {
         alert(result.error || "Login failed");
         return;
       }
-  
+      window.location.href = '/dashboard';
       alert("Login successful!");
-      router.push('/dashboard/view-cases');
+      //router.push('/dashboard/view-cases');
     } catch (err) {
       console.error("Login error:", err);
       alert("Something went wrong. Please try again.");
@@ -59,9 +59,9 @@ export default function SignInPage() {
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
+              <option value="registrar">Registrar</option>
               <option value="judge">Judge</option>
               <option value="lawyer">Lawyer</option>
-              <option value="registrar">Registrar</option>
             </select>
           </div>
 

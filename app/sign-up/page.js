@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function SignUpPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    userType: 'judge',
+    userType: 'registrar',
     name: '',
     email: '',
     phoneNo: '',
@@ -20,7 +20,7 @@ export default function SignUpPage() {
     if (ret === -1) {
       alert("User already exists!");
       setFormData({
-        userType: 'judge',
+        userType: 'registrar',
         name: '',
         email: '',
         phoneNo: '',
@@ -53,9 +53,7 @@ export default function SignUpPage() {
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="judge">Judge</option>
-              <option value="lawyer">Lawyer</option>
-              <option value="registrar">Registrar</option>
+              <option value="Registrar">Registrar</option>
             </select>
           </div>
 

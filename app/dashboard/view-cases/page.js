@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
-import Card from "@/Components/Card";
-import FilterComponent from "@/Components/FilterComponent";
+import Card from "@/app/Components/Card";
+import FilterComponent from "@/app/Components/FilterComponent";
 
 
 export default function ViewCasesPage() {
