@@ -1,23 +1,27 @@
 'use server';
-import mongoose from "mongoose";
-import User from "./userModel";
-
+import { connectToDB } from '@/utils/db';
+import User from './userModel';
+import bcrypt from 'bcryptjs';
 
 async function authenticateUser(data) {
-    if (!mongoose.connection.readyState) {
-        await mongoose.connect("mongodb://localhost:27017/TestDB", {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        });
-    }
+  try {
+    await connectToDB();
 
-    const count= await User.countDocuments({ userType: data.userType , email: data.email , 
-        password: data.password });
+    const user = await User.findOne({ email: data.email, userType: data.userType });
+    if (!user) return -1;
 
-    if(count === 0) {
-        return -1;
-    }
-    return 0;
+    const isMatch = await bcrypt.compare(data.password, user.password);
+    if (!isMatch) return -1;
+
+    return {
+      email: user.email,
+      userType: user.userType,
+      name: user.name
+    };
+  } catch (error) {
+    console.error('Authentication error:', error);
+    return -1;
+  }
 }
 
 export default authenticateUser;

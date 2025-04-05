@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authenticateUser from '@/models/authenticateUser';
 
-
-export default function SignUpPage() {
+export default function SignInPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     userType: 'judge',
@@ -14,19 +13,22 @@ export default function SignUpPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const ret = await authenticateUser(formData);
-    if(ret === -1) {
+
+    const result = await authenticateUser(formData);
+    
+    if (result === -1) {
       alert("Invalid credentials! Please try again.");
       setFormData({
         userType: 'judge',
         email: '',
         password: ''
       });
-    }
-    else {
+    } else {
+      localStorage.setItem('user', JSON.stringify(result));
+      alert("Login successful!");
       router.push('/dashboard/view-cases');
-    }
-  };
+    }    
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -41,26 +43,22 @@ export default function SignUpPage() {
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Sign In</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-black text-sm font-bold mb-2" htmlFor="userType">
-              User Type
-            </label>
+            <label htmlFor="userType" className="block text-black text-sm font-bold mb-2">User Type</label>
             <select
               id="userType"
               name="userType"
               value={formData.userType}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
               <option value="judge">Judge</option>
               <option value="lawyer">Lawyer</option>
               <option value="registrar">Registrar</option>
             </select>
           </div>
 
-
           <div className="mb-4">
-            <label className="block text-black text-sm font-bold mb-2" htmlFor="email">
-              Email
-            </label>
+            <label htmlFor="email" className="block text-black text-sm font-bold mb-2">Email</label>
             <input
               type="email"
               id="email"
@@ -73,9 +71,7 @@ export default function SignUpPage() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-black text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
+            <label htmlFor="password" className="block text-black text-sm font-bold mb-2">Password</label>
             <input
               type="password"
               id="password"
@@ -97,4 +93,4 @@ export default function SignUpPage() {
       </div>
     </div>
   );
-};
+}
