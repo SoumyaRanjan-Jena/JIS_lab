@@ -5,7 +5,7 @@ import FilterComponent from "@/components/FilterComponent";
 import { useState } from 'react';
 import viewCase from "@/models/viewCase";
 
-export default function ViewCasesPage() {
+export default function ManageCasesPage() {
   const [cases, setCases] = useState([]);
 
   async function handleQuery(type, data) {
@@ -16,7 +16,7 @@ export default function ViewCasesPage() {
 
   return (
     <div>
-      <FilterComponent handleQuery={handleQuery} isEditAllowed={false}/>
+      <FilterComponent handleQuery={handleQuery} isEditAllowed={true}/>
       <div className="max-w-7xl mx-auto px-4 mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {cases.map((caseItem, index) => (
@@ -24,7 +24,7 @@ export default function ViewCasesPage() {
               key={index}
               CIN={caseItem.CIN}
               summary={caseItem.summary}
-              isEditAllowed={false}
+              isEditAllowed={true}
             />
           ))}
         </div>

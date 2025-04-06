@@ -11,9 +11,12 @@ const caseSchema = new mongoose.Schema({
     crimeLocation: String,
     arrestingOfficer: String,
     arrestDate: Date,
-    assignedJudgeID: String,
-    assignedLawyerID: String,
+    assignedJudge: String,
+    assignedLawyer: String,
     summary: String,
+    prevHearingDate: Date,
+    nextHearingDate: Date,
+    prevJudgement: String
 
 }, { collection: 'cases' });
 
