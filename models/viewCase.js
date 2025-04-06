@@ -11,22 +11,15 @@ async function viewCase(type, data) {
         });
     }
 
-    // console.log("Type:", type);
-    // console.log("Data received in viewCase:", data);
-
-    if (type === 0) {
-        // Search by CIN
-        var result = await Case.find();
-        if(data !== "") {
-            result = await Case.find({ CIN: Number(data) });
-        }
-        console.log("Result from viewCase:", result);
+    var result = await Case.find();
+    if (type === 0 && data !== "") {
+        result = await Case.find({ CIN: Number(data) });
     } 
-    else {
-        // Filter by case status
-        const result = await Case.find({ caseStatus: data });
-        console.log("Result from viewCase:", result);
+    else if (type === 1 && data !== "") {
+        result = await Case.find({ caseStatus: data });
     }
+    const plainData = JSON.parse(JSON.stringify(result));
+    return plainData;
 }
 
 export default viewCase;

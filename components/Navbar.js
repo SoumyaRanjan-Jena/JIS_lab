@@ -13,7 +13,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
+    <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -26,25 +26,25 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/dashboard/view-cases"
-              className="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+              className="text-gray-600 hover:text-black px-3 py-2 rounded-md text-sm font-medium"
             >
               View Cases
             </Link>
             <Link
-              href="/projects"
-              className="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+              href="/dashboard/manage-cases"
+              className="text-gray-600 hover:text-black px-3 py-2 rounded-md text-sm font-medium"
             >
               Manage Cases
             </Link>
             <Link
-              href="/about"
-              className="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+              href="/dashboard/edit-cases"
+              className="text-gray-600 hover:text-black px-3 py-2 rounded-md text-sm font-medium"
             >
               Manage Accounts
             </Link>
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-1 text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+              className="flex items-center space-x-1 text-gray-600 hover:text-black px-3 py-2 rounded-md text-sm font-medium"
             >
               <LogOut className="h-4 w-4" />
               <span>Logout</span>
