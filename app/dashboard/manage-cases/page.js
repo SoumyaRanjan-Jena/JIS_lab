@@ -9,7 +9,8 @@ export default function ManageCasesPage() {
   const [cases, setCases] = useState([]);
 
   async function handleQuery(type, data) {
-    const result = await viewCase(type, data);
+    const res = await fetch("/api/view-cases?type=" + type + "&data=" + data);
+    const result = await res.json();
     setCases(result);
   }
 

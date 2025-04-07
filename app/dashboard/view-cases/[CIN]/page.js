@@ -1,6 +1,6 @@
 import React from "react";
 import viewCase from "@/models/viewCase";
-
+import { headers } from 'next/headers';
 
 const formatDate = (dateString) => {
     if (!dateString) return "NA";
@@ -14,8 +14,11 @@ const formatDate = (dateString) => {
 
 export default async function Page({ params }) {
     const { CIN } = await params;
-    const caseDetails = await viewCase(0, CIN);
-    const caseData = caseDetails[0];
+    const baseUrl = headers().get('host'); // works inside server functions
+    const res = await fetch(`http://${baseUrl}/api/view-cases?type=0&data=${CIN}`);
+
+    const result = await res.json();
+    const caseData = result[0];
 
     return (
         <div className="bg-white max-w-7xl mx-auto px-4 mb-6 mt-6">

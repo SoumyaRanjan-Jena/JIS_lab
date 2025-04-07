@@ -38,7 +38,13 @@ const CaseEditForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await updateCase(currCaseData.CIN, formData);
+    const res = await fetch(`/api/update-case?CIN=${currCaseData.CIN}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+    const result = await res.json();
+
     alert("Case updated successfully!");
     router.push('/dashboard/manage-cases');
   };
@@ -77,9 +83,9 @@ const CaseEditForm = (props) => {
               onChange={handleInputChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
+              <option value="Pending">Pending</option>
               <option value="Upcoming">Upcoming</option>
-              <option value="Ongoing">Ongoing</option>
-              <option value="Closed">Closed</option>
+              <option value="Completed">Completed</option>
             </select>
           </div>
 

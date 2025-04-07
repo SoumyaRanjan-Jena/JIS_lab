@@ -1,11 +1,12 @@
 import CaseEditForm from '@/app/Components/CaseEditForm';
-import Case from '@/models/caseModel';
-import viewCase from '@/models/viewCase';
+import { headers } from 'next/headers';
 
 export default async function Page({ params }) {
     const { CIN } = await params;
-    const currCaseData = await viewCase(0, CIN);
-    const caseData = currCaseData[0];
+    const baseUrl = headers().get('host'); // works inside server functions
+    const res = await fetch(`http://${baseUrl}/api/view-cases?type=0&data=${CIN}`);
+    const result = await res.json();
+    const caseData = result[0];
     
     return(
         <div>

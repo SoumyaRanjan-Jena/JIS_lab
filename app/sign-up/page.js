@@ -15,9 +15,13 @@ export default function SignUpPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const ret = await addNewUser(formData);
+    const res = await fetch('/api/add-new-user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
 
-    if (ret === -1) {
+    if (res.status === 400) {
       alert("User already exists!");
       setFormData({
         userType: 'registrar',
