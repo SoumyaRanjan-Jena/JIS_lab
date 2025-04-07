@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { User as UserIcon } from 'lucide-react';
@@ -8,6 +8,8 @@ import { User as UserIcon } from 'lucide-react';
 export default function Navbar() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef();
 
   useEffect(() => {
     async function fetchUser() {
@@ -29,10 +31,27 @@ export default function Navbar() {
     fetchUser();
   }, []);
 
+  // Hide dropdown if clicked outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = async () => {
+    if (confirm('Are you sure you want to logout?')) {
+      await fetch('/api/logout', { method: 'POST' });
+      window.location.href = '/';
+    }
+  };
+
   if (loading) return null;
 
   const displayName = user?.name?.split(' ')[0] || 'Guest';
-  const profileLink = user ? '/profile' : '/sign-in';
   const logoLink = user ? '/dashboard' : '/';
 
   return (
@@ -58,7 +77,6 @@ export default function Navbar() {
                 >
                   View Cases
                 </Link>
-
                 {user.userType === 'registrar' && (
                   <>
                     <Link
@@ -75,7 +93,6 @@ export default function Navbar() {
                     </Link>
                   </>
                 )}
-
                 {user.userType === 'lawyer' && (
                   <Link
                     href="/dashboard/billing"
@@ -87,26 +104,62 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* Profile Link */}
-            <Link
-              href={profileLink}
-              className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-100"
-            >
-              {user?.profilePic ? (
-                <Image
-                  src={user.profilePic}
-                  alt="Avatar"
-                  width={32}
-                  height={32}
-                  className="rounded-full object-cover"
-                />
+            {/* Profile Section */}
+            <div className="relative" ref={dropdownRef}>
+              {user ? (
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-100 focus:outline-none"
+                >
+                  {user?.profilePic ? (
+                    <Image
+                      src={user.profilePic}
+                      alt="Avatar"
+                      width={32}
+                      height={32}
+                      className="rounded-full object-cover"
+                    />
+                  ) : (
+                    <UserIcon className="h-8 w-8 text-gray-500" />
+                  )}
+                  <span className="text-gray-700 font-medium text-sm">
+                    {displayName}
+                  </span>
+                </button>
               ) : (
-                <UserIcon className="h-8 w-8 text-gray-500" />
+                <Link
+                  href="/sign-in"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-100"
+                >
+                  <UserIcon className="h-8 w-8 text-gray-500" />
+                  <span className="text-gray-700 font-medium text-sm">
+                    {displayName}
+                  </span>
+                </Link>
               )}
-              <span className="text-gray-700 font-medium text-sm">
-                {displayName}
-              </span>
-            </Link>
+
+              {/* Dropdown */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg border border-gray-200">
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Profile Info
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
