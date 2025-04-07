@@ -20,7 +20,7 @@ async function addNewUser(data) {
         userType: data.userType,
         name: data.name,
         email: data.email,
-        phone: data.phoneNo,
+        phone: data.phone,
         password: data.password,
     });
 

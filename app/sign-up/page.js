@@ -9,7 +9,7 @@ export default function SignUpPage() {
     userType: 'registrar',
     name: '',
     email: '',
-    phoneNo: '',
+    phone: '',
     password: ''
   });
 
@@ -23,7 +23,7 @@ export default function SignUpPage() {
         userType: 'registrar',
         name: '',
         email: '',
-        phoneNo: '',
+        phone: '',
         password: ''
       });
     } else {
@@ -84,12 +84,12 @@ export default function SignUpPage() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="phoneNo" className="block text-black text-sm font-bold mb-2">Phone Number</label>
+            <label htmlFor="phone" className="block text-black text-sm font-bold mb-2">Phone Number</label>
             <input
               type="tel"
-              id="phoneNo"
-              name="phoneNo"
-              value={formData.phoneNo}
+              id="phone"
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -115,6 +115,12 @@ export default function SignUpPage() {
           >
             Submit
           </button>
+          <div className="mt-4 text-center text-sm text-gray-600">
+            If already a user,{' '}
+            <a href="/sign-in" className="text-blue-600 hover:underline">
+              sign in
+            </a>
+          </div>
         </form>
       </div>
     </div>

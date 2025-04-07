@@ -1,4 +1,4 @@
-import CaseEditForm from '@/components/CaseEditForm';
+import CaseEditForm from '@/app/Components/CaseEditForm';
 import Case from '@/models/caseModel';
 import viewCase from '@/models/viewCase';
 

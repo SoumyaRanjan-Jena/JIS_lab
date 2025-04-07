@@ -1,29 +1,33 @@
-// app/api/login/route.js
+//app/api/login/route.js
 import { NextResponse } from 'next/server';
-import { cookies }      from 'next/headers';
-import authenticateUser from '@/models/authenticateUser';
+import dbConnect from '@/utils/db';
+import User from '@/models/userModel';
+import bcrypt from 'bcryptjs';
+import { cookies } from 'next/headers';
 
 export async function POST(req) {
-  const { email, password, userType } = await req.json();
-  const user = await authenticateUser({ email, password, userType });
-  if (user === -1) {
+  await dbConnect();
+  const body = await req.json();
+  const { email, password, userType } = body;
+
+  const user = await User.findOne({ email, userType: userType.toLowerCase() });
+  if (!user) {
+    return NextResponse.json({ error: 'Invalid user' }, { status: 401 });
+  }
+  const hashPass = /^\$2y\$/.test(user.password) ? '$2a$' + user.password.slice(4) : user.password;
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }
 
-  const cookieStore = cookies();
-  // set email + userType in httpOnly cookies
-  cookieStore.set('userEmail', user.email, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-  });
-  cookieStore.set('userType', user.userType, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-  });
+  cookies().set('userEmail', user.email, { httpOnly: true });
+  cookies().set('userType', user.userType, { httpOnly: true });
+
+  cookies().set('user', JSON.stringify({
+    id: user._id,
+    name: user.name,
+    userType: user.userType,
+  }), { httpOnly: true });
 
   return NextResponse.json({ success: true });
 }
