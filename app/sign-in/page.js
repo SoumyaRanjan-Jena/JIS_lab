@@ -2,7 +2,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import authenticateUser from '@/models/authenticateUser';
+import authenticateUser from '@/lib/authenticateUser';
 
 export default function SignInPage() {
   const router = useRouter();

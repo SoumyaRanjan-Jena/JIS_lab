@@ -1,9 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import getAvailableDays from '@/models/getAvailableDays';
-=======
->>>>>>> origin/master
+
 
 const DatePicker = (props) => {
   const [selectedYear, setSelectedYear] = useState('');
@@ -24,12 +21,8 @@ const DatePicker = (props) => {
     }
     const yearNum = parseInt(selectedYear, 10);
     const monthNum = parseInt(selectedMonth, 10);
-<<<<<<< HEAD
-    const availableDays = await getAvailableDays(yearNum, monthNum);
-=======
     const res = await fetch(`/api/get-available-days?year=${yearNum}&month=${monthNum}`);
     const availableDays = await res.json();
->>>>>>> origin/master
     const formattedDays = availableDays.map(day =>
       day.toString().padStart(2, '0')
     );

@@ -1,9 +1,9 @@
+//app/dashboard/view-cases/page.js
 'use client';
 import React from "react";
 import Card from "@/app/Components/Card";
 import FilterComponent from "@/app/Components/FilterComponent";
 import { useState } from 'react';
-import viewCase from "@/models/viewCase";
 
 export default function ViewCasesPage() {
   const [cases, setCases] = useState([]);

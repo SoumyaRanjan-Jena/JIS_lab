@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DatePicker from './DatePicker';
-import updateCase from '@/models/updateCase';
 
 const formatDate = (dateString) => {
   if (!dateString) return 'NaN';

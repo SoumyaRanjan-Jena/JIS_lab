@@ -6,7 +6,7 @@ import User                  from '@/models/userModel';
 import ProfileClient         from './ProfileClient';
 
 export default async function ProfilePage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const email    = cookieStore.get('userEmail')?.value;
   const userType = cookieStore.get('userType')?.value;
   if (!email || !userType) redirect('/sign-in');

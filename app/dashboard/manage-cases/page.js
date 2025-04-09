@@ -3,7 +3,7 @@ import React from "react";
 import Card from "@/app/Components/Card";
 import FilterComponent from "@/app/Components/FilterComponent";
 import { useState } from 'react';
-import viewCase from "@/models/viewCase";
+
 
 export default function ManageCasesPage() {
   const [cases, setCases] = useState([]);

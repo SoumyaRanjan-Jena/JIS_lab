@@ -6,7 +6,7 @@ import User             from '@/models/userModel';
 
 export async function GET() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const email    = cookieStore.get('userEmail')?.value;
     const userType = cookieStore.get('userType')?.value;
     if (!email || !userType) return NextResponse.json(null, { status: 200 });

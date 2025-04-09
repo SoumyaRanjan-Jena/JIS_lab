@@ -1,3 +1,4 @@
+//app/api/view-cases/route.js
 import { NextResponse } from 'next/server';
 import getCases from '@/lib/getCases';
 

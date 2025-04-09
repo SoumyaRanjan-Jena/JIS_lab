@@ -39,6 +39,21 @@ export default function ManageCasesPage() {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+
+    // Validate email and phone
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+    
+    if (!emailRegex.test(form.email)) {
+      alert('Please enter a valid email.');
+      return;
+    }
+    
+    if (!phoneRegex.test(form.phone)) {
+      alert('Phone number must be 10 digits.');
+      return;
+    }
+
     const res = await fetch('/api/accounts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

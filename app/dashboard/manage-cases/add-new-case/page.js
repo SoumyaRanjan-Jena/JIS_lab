@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import addNewCase from '@/models/addNewCase';
 import { useRouter } from 'next/navigation';
 
 const AddNewCaseForm = () => {

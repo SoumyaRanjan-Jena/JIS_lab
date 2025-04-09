@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import addNewUser from '@/models/addNewUser';
 import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {
@@ -15,6 +14,21 @@ export default function SignUpPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    // Validate phone (10 digits)
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(formData.phone)) {
+      alert("Phone number should be exactly 10 digits.");
+      return;
+    }
+
     const res = await fetch('/api/add-new-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
